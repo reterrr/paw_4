@@ -1,5 +1,15 @@
 const express = require('express');
 const app = express();
+const db = require('./db');
+
+const cors = require('cors');
+app.use(cors());
+
+function getRandomJoke(category) {
+    const jokes = db[category];
+    if (!jokes) return null; // Return null if the category doesn't exist
+    return jokes[Math.floor(Math.random() * jokes.length)];
+}
 
 // define endpoint for exercise 4 here
 app.get('/hello/name', (req, res) => {
@@ -79,6 +89,25 @@ app.get('/math/power/:base/:exponent', (req, res) => {
     }
 
     res.json(response);
+});
+
+app.get('/jokebook/categories', (req, res) => {
+    res.json(db.categories);
+});
+
+app.get('/jokebook/joke/:category', (req, res) => {
+    const { category } = req.params;
+
+    // Fetch a random joke for the category
+    const joke = getRandomJoke(category);
+
+    if (!joke) {
+        // If the category is invalid
+        return res.status(400).json({ error: `no jokes for category ${category}` });
+    }
+
+    // Respond with the random joke
+    res.json(joke);
 });
 
 
