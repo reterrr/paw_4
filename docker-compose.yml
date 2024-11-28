@@ -6,6 +6,8 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
+    networks:
+      - back-server
 
   nginx:
     image: nginx:latest
@@ -15,6 +17,16 @@ services:
     volumes:
       - ./app:/usr/share/nginx/html:ro
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+    networks:
+      - back-server
+      
 
 volumes:
   dbdata:
+  
+  
+networks:
+  back-server:
+    driver: bridge

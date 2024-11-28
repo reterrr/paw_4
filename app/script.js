@@ -4,13 +4,18 @@ const funnyButton = document.getElementById('funny-random');
 const jokeDisplay = document.getElementById('joke-display');
 
 // Base URL for the backend API
-const BASE_URL = 'localhost:3000';
+const BASE_URL = 'http://localhost:3000';
 
 // Function to fetch and display a joke
 async function fetchJoke(category) {
   try {
     // Fetch joke from backend
-    const response = await fetch(`${BASE_URL}/jokebook/joke/${category}`);
+    const response = await fetch(`${BASE_URL}/jokebook/joke/${category}`, {
+  mode: 'cors',
+  headers: {
+    'Access-Control-Allow-Origin':'*'
+  }
+});
     if (!response.ok) {
       throw new Error(`Error: ${response.statusText}`);
     }

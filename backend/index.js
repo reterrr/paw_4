@@ -1,8 +1,9 @@
 const express = require('express');
-const app = express();
-const db = require('./db');
-
 const cors = require('cors');
+
+const db = require('./db');
+const app = express();
+
 app.use(cors());
 
 function getRandomJoke(category) {
